@@ -1,34 +1,30 @@
-<!DOCTYPE HTML> 
-<html lang="en"> 
-<head>
-<title>Hello World</title>
-<meta charset="utf-8"> 
-</head>
-
-    
+<!DOCTYPE html>
+<!-- saved from url=(0066)https://courses.engr.illinois.edu/cs418/fa2017/HelloAnimation.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MP1 Maher Samawi</title>
+ 
 <script id="shader-vs" type="x-shader/x-vertex">
-attribute vec4 aVertexColor;
-attribute vec3 aVertexPosition;
-varying vec4 vColor;
-void main(void) {
-    gl_Position = vec4(aVertexPosition, 1.0);
-    vColor = aVertexColor;
-}
-</script>
-  
-<script id="shader-fs" type="x-shader/x-fragment">
+   attribute vec3 aVertexPosition;
+   attribute vec4 aVertexColor;
+
+    uniform mat4 uMVMatrix;
+    varying vec4 vColor;
+
+    void main(void) {
+        gl_Position = uMVMatrix*vec4(aVertexPosition, 1.0);
+        vColor = aVertexColor;
+    }
+</script><script id="shader-fs" type="x-shader/x-fragment">
 precision mediump float;
 varying vec4 vColor;
 void main(void) {
         gl_FragColor = vColor;
  }
-</script>
-
-
-<script src="gl-matrix-min.js"></script>
-<script src="mp1.js"></script>   
+</script><script src="gl-matrix-min.js"></script><script type="text/javascript" src="webgl-utils.js"></script><script src="mp1.js"></script></head>
+   
 <body onload="startup();">
   <canvas id="myGLCanvas" width="500" height="500"></canvas>
-</body>
 
-</html>
+
+
+</body></html>

@@ -4,8 +4,32 @@ var canvas;
 var shaderProgram;
 var vertexPositionBuffer;
 
+
 // Create a place to store vertex colors
 var vertexColorBuffer;
+
+var mvMatrix = mat4.create();
+var rotAngle = 0;
+var lastTime = 0;
+
+
+/**
+ * Sends projection/modelview matrices to shader
+ */
+function setMatrixUniforms() {
+    gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
+}
+
+
+/**
+ * Translates degrees to radians
+ * @param {Number} degrees Degree input to function
+ * @return {Number} The radians that correspond to the degree input
+ */
+function degToRad(degrees) {
+        return degrees * Math.PI / 180;
+}
+
 
 /**
  * Creates a context for WebGL
@@ -97,6 +121,7 @@ function setupShaders() {
 
   shaderProgram.vertexColorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");
   gl.enableVertexAttribArray(shaderProgram.vertexColorAttribute);
+  shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
   
 }
 
@@ -106,7 +131,7 @@ function setupShaders() {
 function setupBuffers() {
   vertexPositionBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, vertexPositionBuffer);
-  var triangleVertices = [
+var triangleVertices = [
       // Top Triangles (Blue)
         -0.8, 0.7, 0.0,
         -0.8, 0.5, 0.0,
@@ -209,13 +234,14 @@ function setupBuffers() {
       0.5, -0.45, 0.0,
       
   ];
+    
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(triangleVertices), gl.STATIC_DRAW);
   vertexPositionBuffer.itemSize = 3;
   vertexPositionBuffer.numberOfItems = 66;
     
   vertexColorBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, vertexColorBuffer);
-  var colors = [
+var colors = [
          0.0, 0.0, 0.7, 1.0,
          0.0, 0.0, 0.7, 1.0,
          0.0, 0.0, 0.7, 1.0,
@@ -314,15 +340,30 @@ function setupBuffers() {
  */
 function draw() { 
   gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
-  gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);  
+  mat4.identity(mvMatrix);
+  mat4.rotateX(mvMatrix, mvMatrix, degToRad(rotAngle));  
   gl.bindBuffer(gl.ARRAY_BUFFER, vertexPositionBuffer);
   gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, 
                          vertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
   gl.bindBuffer(gl.ARRAY_BUFFER, vertexColorBuffer);
   gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, 
                             vertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
-                          
+  
+  setMatrixUniforms();
   gl.drawArrays(gl.TRIANGLES, 0, vertexPositionBuffer.numberOfItems);
+}
+
+/**
+ * Animation to be called from tick. Updates globals and performs animation for each tick.
+ */
+function animate() {
+    var timeNow = new Date().getTime();
+    if (lastTime != 0) {
+        var elapsed = timeNow - lastTime;    
+        rotAngle= (rotAngle+1.0) % 360;
+    }
+    lastTime = timeNow;
 }
 
 /**
@@ -334,5 +375,15 @@ function draw() {
   setupShaders(); 
   setupBuffers();
   gl.clearColor(0.0, 0.0, 0.0, 0.0);
-  draw();  
+  gl.enable(gl.DEPTH_TEST);
+  tick();
+}
+
+/**
+ * Tick called for every animation frame.
+ */
+function tick() {
+    requestAnimFrame(tick);
+    draw();
+    animate();
 }
