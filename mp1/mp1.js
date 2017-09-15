@@ -437,58 +437,58 @@ function animate() {
       
       // Orange Strips 
       // 1st One
-      -0.5-randNum, -0.35, 0.0,
-      -0.5-randNum, -0.45, 0.0,
-      -0.6-randNum, -0.35, 0.0,
+     -0.5-randNum, -0.35, 0.0,
+     -0.5-randNum, -0.45, 0.0,
+     -0.6-randNum, -0.35, 0.0,
       
-      -0.6-randNum, -0.40, 0.0,
-      -0.6-randNum, -0.35, 0.0,
-      -0.5-randNum, -0.45, 0.0,
+     -0.6-randNum, -0.40, 0.0,
+     -0.6-randNum, -0.35, 0.0,
+     -0.5-randNum, -0.45, 0.0,
       
       // 2nd One
-      -0.3-randNum, -0.35, 0.0,
-      -0.3-randNum, -0.6, 0.0,
-      -0.4-randNum, -0.35, 0.0,
+     -0.3-randNum, -0.35, 0.0,
+     -0.3-randNum, -0.6, 0.0,
+     -0.4-randNum, -0.35, 0.0,
       
-      -0.4-randNum, -0.5, 0.0,
-      -0.4-randNum, -0.35, 0.0,
-      -0.3-randNum, -0.6, 0.0,
+     -0.4-randNum, -0.5, 0.0,
+     -0.4-randNum, -0.35, 0.0,
+     -0.3-randNum, -0.6, 0.0,
       
       // 3rd One
-      -0.05-randNum, -0.35, 0.0,
-      -0.05-randNum, -0.75, 0.0,
-      -0.15-randNum, -0.35, 0.0,
+     -0.05-randNum, -0.35, 0.0,
+     -0.05-randNum, -0.75, 0.0,
+     -0.15-randNum, -0.35, 0.0,
       
-      -0.15-randNum, -0.65, 0.0,
-      -0.15-randNum, -0.35, 0.0,
-      -0.05-randNum, -0.75, 0.0,
+     -0.15-randNum, -0.65, 0.0,
+     -0.15-randNum, -0.35, 0.0,
+     -0.05-randNum, -0.75, 0.0,
       
-      // 4th One
-      0.1+randNum, -0.35, 0.0,
-      0.1+randNum, -0.75, 0.0,
-      0.2+randNum, -0.35, 0.0,
+     // 4th One
+     0.1+randNum, -0.35, 0.0,
+     0.1+randNum, -0.75, 0.0,
+     0.2+randNum, -0.35, 0.0,
       
-      0.2+randNum, -0.65, 0.0,
-      0.2+randNum, -0.35, 0.0,
-      0.1+randNum, -0.75, 0.0,
+     0.2+randNum, -0.65, 0.0,
+     0.2+randNum, -0.35, 0.0,
+     0.1+randNum, -0.75, 0.0,
       
-      // 5th One
-      0.3+randNum, -0.35, 0.0,
-      0.3+randNum, -0.6, 0.0,
-      0.4+randNum, -0.35, 0.0,
+     // 5th One
+     0.3+randNum, -0.35, 0.0,
+     0.3+randNum, -0.6, 0.0,
+     0.4+randNum, -0.35, 0.0,
       
-      0.4+randNum, -0.5, 0.0,
-      0.4+randNum, -0.35, 0.0,
-      0.3+randNum, -0.6, 0.0,
+     0.4+randNum, -0.5, 0.0,
+     0.4+randNum, -0.35, 0.0,
+     0.3+randNum, -0.6, 0.0,
       
-      // 6th One
-      0.5+randNum, -0.35, 0.0,
-      0.5+randNum, -0.45, 0.0,
-      0.6+randNum, -0.35, 0.0,
+     // 6th One
+     0.5+randNum, -0.35, 0.0,
+     0.5+randNum, -0.45, 0.0,
+     0.6+randNum, -0.35, 0.0,
       
-      0.6+randNum, -0.40, 0.0,
-      0.6+randNum, -0.35, 0.0,
-      0.5+randNum, -0.45, 0.0,   
+     0.6+randNum, -0.40, 0.0,
+     0.6+randNum, -0.35, 0.0,
+     0.5+randNum, -0.45, 0.0,   
     ];
     
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(triangleVertices), gl.DYNAMIC_DRAW);
