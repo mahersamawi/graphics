@@ -1,11 +1,18 @@
+/**
+ * @author Maher Samawi
+ * Used the code from the HelloAnimation file as a starter
+ */
 
 var gl;
 var canvas;
 var shaderProgram;
 var vertexPositionBuffer;
-var i = 0;
-var num = 0;
 
+// Counter to create the animation for the orange strips 
+var counter = 0;
+var randNum = 0;
+
+var triangleVertices;
 // Create a place to store vertex colors
 var vertexColorBuffer;
 
@@ -57,6 +64,7 @@ function createGLContext(canvas) {
   return context;
 }
 
+
 /**
  * Loads Shaders
  * @param {string} id ID string for shader to load. Either vertex shader/fragment shader
@@ -100,6 +108,7 @@ function loadShaderFromDOM(id) {
   return shader;
 }
 
+
 /**
  * Setup the fragment and vertex shaders
  */
@@ -126,13 +135,14 @@ function setupShaders() {
   
 }
 
+
 /**
  * Populate buffers with data
  */
 function setupBuffers() {
   vertexPositionBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, vertexPositionBuffer);
-var triangleVertices = [
+  triangleVertices = [
       // Top Triangles (Blue)
      -0.8, 0.7, 0.0,
      -0.8, 0.5, 0.0,
@@ -180,31 +190,31 @@ var triangleVertices = [
       
       // Orange Strips 
       // 1st One
-      -0.5, -0.35, 0.0,
-      -0.5, -0.45, 0.0,
-      -0.6, -0.35, 0.0,
+     -0.5, -0.35, 0.0,
+     -0.5, -0.45, 0.0,
+     -0.6, -0.35, 0.0,
       
-      -0.6, -0.40, 0.0,
-      -0.6, -0.35, 0.0,
-      -0.5, -0.45, 0.0,
+     -0.6, -0.40, 0.0,
+     -0.6, -0.35, 0.0,
+     -0.5, -0.45, 0.0,
       
       // 2nd one
-      -0.3, -0.35, 0.0,
-      -0.3, -0.6, 0.0,
-      -0.4, -0.35, 0.0,
+     -0.3, -0.35, 0.0,
+     -0.3, -0.6, 0.0,
+     -0.4, -0.35, 0.0,
       
-      -0.4, -0.5, 0.0,
-      -0.4, -0.35, 0.0,
-      -0.3, -0.6, 0.0,
+     -0.4, -0.5, 0.0,
+     -0.4, -0.35, 0.0,
+     -0.3, -0.6, 0.0,
       
       // 3rd one
-      -0.05, -0.35, 0.0,
-      -0.05, -0.75, 0.0,
-      -0.15, -0.35, 0.0,
+     -0.05, -0.35, 0.0,
+     -0.05, -0.75, 0.0,
+     -0.15, -0.35, 0.0,
       
-      -0.15, -0.65, 0.0,
-      -0.15, -0.35, 0.0,
-      -0.05, -0.75, 0.0,
+     -0.15, -0.65, 0.0,
+     -0.15, -0.35, 0.0,
+     -0.05, -0.75, 0.0,
       
       // 4th One
       0.1, -0.35, 0.0,
@@ -240,101 +250,102 @@ var triangleVertices = [
     
   vertexColorBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, vertexColorBuffer);
-var colors = [
-         // Blue
-         0.0, 0.0, 0.7, 1.0,
-         0.0, 0.0, 0.7, 1.0,
-         0.0, 0.0, 0.7, 1.0,
-            
-         0.0, 0.0, 0.7, 1.0,
-         0.0, 0.0, 0.7, 1.0,
-         0.0, 0.0, 0.7, 1.0,
-      
-         0.0, 0.0, 0.7, 1.0,
-         0.0, 0.0, 0.7, 1.0,
-         0.0, 0.0, 0.7, 1.0,
-      
-         0.0, 0.0, 0.7, 1.0,
-         0.0, 0.0, 0.7, 1.0,
-         0.0, 0.0, 0.7, 1.0,
-      
-         0.0, 0.0, 0.7, 1.0,
-         0.0, 0.0, 0.7, 1.0,
-         0.0, 0.0, 0.7, 1.0,
-      
-         0.0, 0.0, 0.7, 1.0,
-         0.0, 0.0, 0.7, 1.0,
-         0.0, 0.0, 0.7, 1.0,
-      
-         0.0, 0.0, 0.7, 1.0,
-         0.0, 0.0, 0.7, 1.0,
-         0.0, 0.0, 0.7, 1.0,
-      
-         0.0, 0.0, 0.7, 1.0,
-         0.0, 0.0, 0.7, 1.0,
-         0.0, 0.0, 0.7, 1.0,
-      
-         0.0, 0.0, 0.7, 1.0,
-         0.0, 0.0, 0.7, 1.0,
-         0.0, 0.0, 0.7, 1.0,
-      
-         0.0, 0.0, 0.7, 1.0,
-         0.0, 0.0, 0.7, 1.0,
-         0.0, 0.0, 0.7, 1.0,
-            
-         // Orange
-         1.0, 0.2, 0.0, 1.0,
-         1.0, 0.2, 0.0, 1.0,
-         1.0, 0.2, 0.0, 1.0,
-      
-         1.0, 0.2, 0.0, 1.0,
-         1.0, 0.2, 0.0, 1.0,
-         1.0, 0.2, 0.0, 1.0,
-      
-         1.0, 0.2, 0.0, 1.0,
-         1.0, 0.2, 0.0, 1.0,
-         1.0, 0.2, 0.0, 1.0,
-      
-         1.0, 0.2, 0.0, 1.0,
-         1.0, 0.2, 0.0, 1.0,
-         1.0, 0.2, 0.0, 1.0,
-      
-         1.0, 0.2, 0.0, 1.0,
-         1.0, 0.2, 0.0, 1.0,
-         1.0, 0.2, 0.0, 1.0,
-      
-         1.0, 0.2, 0.0, 1.0,
-         1.0, 0.2, 0.0, 1.0,
-         1.0, 0.2, 0.0, 1.0,
-      
-         1.0, 0.2, 0.0, 1.0,
-         1.0, 0.2, 0.0, 1.0,
-         1.0, 0.2, 0.0, 1.0,
-      
-         1.0, 0.2, 0.0, 1.0,
-         1.0, 0.2, 0.0, 1.0,
-         1.0, 0.2, 0.0, 1.0,
-      
-         1.0, 0.2, 0.0, 1.0,
-         1.0, 0.2, 0.0, 1.0,
-         1.0, 0.2, 0.0, 1.0,
-      
-         1.0, 0.2, 0.0, 1.0,
-         1.0, 0.2, 0.0, 1.0,
-         1.0, 0.2, 0.0, 1.0,
-      
-         1.0, 0.2, 0.0, 1.0,
-         1.0, 0.2, 0.0, 1.0,
-         1.0, 0.2, 0.0, 1.0,
-            
-         1.0, 0.2, 0.0, 1.0,
-         1.0, 0.2, 0.0, 1.0,
-         1.0, 0.2, 0.0, 1.0,
+  var colors = [
+     // Blue
+     0.0, 0.0, 0.7, 1.0,
+     0.0, 0.0, 0.7, 1.0,
+     0.0, 0.0, 0.7, 1.0,
+
+     0.0, 0.0, 0.7, 1.0,
+     0.0, 0.0, 0.7, 1.0,
+     0.0, 0.0, 0.7, 1.0,
+
+     0.0, 0.0, 0.7, 1.0,
+     0.0, 0.0, 0.7, 1.0,
+     0.0, 0.0, 0.7, 1.0,
+
+     0.0, 0.0, 0.7, 1.0,
+     0.0, 0.0, 0.7, 1.0,
+     0.0, 0.0, 0.7, 1.0,
+
+     0.0, 0.0, 0.7, 1.0,
+     0.0, 0.0, 0.7, 1.0,
+     0.0, 0.0, 0.7, 1.0,
+
+     0.0, 0.0, 0.7, 1.0,
+     0.0, 0.0, 0.7, 1.0,
+     0.0, 0.0, 0.7, 1.0,
+
+     0.0, 0.0, 0.7, 1.0,
+     0.0, 0.0, 0.7, 1.0,
+     0.0, 0.0, 0.7, 1.0,
+
+     0.0, 0.0, 0.7, 1.0,
+     0.0, 0.0, 0.7, 1.0,
+     0.0, 0.0, 0.7, 1.0,
+
+     0.0, 0.0, 0.7, 1.0,
+     0.0, 0.0, 0.7, 1.0,
+     0.0, 0.0, 0.7, 1.0,
+
+     0.0, 0.0, 0.7, 1.0,
+     0.0, 0.0, 0.7, 1.0,
+     0.0, 0.0, 0.7, 1.0,
+
+     // Orange
+     1.0, 0.2, 0.0, 1.0,
+     1.0, 0.2, 0.0, 1.0,
+     1.0, 0.2, 0.0, 1.0,
+
+     1.0, 0.2, 0.0, 1.0,
+     1.0, 0.2, 0.0, 1.0,
+     1.0, 0.2, 0.0, 1.0,
+
+     1.0, 0.2, 0.0, 1.0,
+     1.0, 0.2, 0.0, 1.0,
+     1.0, 0.2, 0.0, 1.0,
+
+     1.0, 0.2, 0.0, 1.0,
+     1.0, 0.2, 0.0, 1.0,
+     1.0, 0.2, 0.0, 1.0,
+
+     1.0, 0.2, 0.0, 1.0,
+     1.0, 0.2, 0.0, 1.0,
+     1.0, 0.2, 0.0, 1.0,
+
+     1.0, 0.2, 0.0, 1.0,
+     1.0, 0.2, 0.0, 1.0,
+     1.0, 0.2, 0.0, 1.0,
+
+     1.0, 0.2, 0.0, 1.0,
+     1.0, 0.2, 0.0, 1.0,
+     1.0, 0.2, 0.0, 1.0,
+
+     1.0, 0.2, 0.0, 1.0,
+     1.0, 0.2, 0.0, 1.0,
+     1.0, 0.2, 0.0, 1.0,
+
+     1.0, 0.2, 0.0, 1.0,
+     1.0, 0.2, 0.0, 1.0,
+     1.0, 0.2, 0.0, 1.0,
+
+     1.0, 0.2, 0.0, 1.0,
+     1.0, 0.2, 0.0, 1.0,
+     1.0, 0.2, 0.0, 1.0,
+
+     1.0, 0.2, 0.0, 1.0,
+     1.0, 0.2, 0.0, 1.0,
+     1.0, 0.2, 0.0, 1.0,
+
+     1.0, 0.2, 0.0, 1.0,
+     1.0, 0.2, 0.0, 1.0,
+     1.0, 0.2, 0.0, 1.0,
     ];
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.DYNAMIC_DRAW); // Dymanic
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.DYNAMIC_DRAW);
   vertexColorBuffer.itemSize = 4;
   vertexColorBuffer.numItems = 66;  
 }
+
 
 /**
  * Draw call that applies matrix transformations to model and draws model in frame
@@ -355,11 +366,11 @@ function draw() {
   gl.drawArrays(gl.TRIANGLES, 0, vertexPositionBuffer.numberOfItems);
 }
 
+
 /**
  * Animation to be called from tick. Updates globals and performs animation for each tick.
  */
 function animate() {
-    var num = 0;
     var timeNow = new Date().getTime();
     if (lastTime != 0) {
         var elapsed = timeNow - lastTime;    
@@ -367,16 +378,19 @@ function animate() {
     }
     lastTime = timeNow;
     
-    if (i % 20 == 0) {
-        num = Math.random() - 0.1;
+    // Check the counter to create a random number to add or subtract from the triangle vertices
+    if (counter % 20 == 0) {
+        randNum = Math.random() - 0.8;
     }
-    if (i % 15 == 0) {
-        num = 0.1;
+    if (counter % 15 == 0) {
+        randNum = 0.1;
     }
-    
+
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexPositionBuffer);
-var triangleVertices = [
-      // Top Triangles (Blue)
+
+    // Same array as before with the random number included
+    triangleVertices = [
+     // Top Triangles (Blue)
      -0.8, 0.7, 0.0,
      -0.8, 0.5, 0.0,
       0.8,  0.5, 0.0,
@@ -385,7 +399,7 @@ var triangleVertices = [
       0.8, 0.7, 0.0,
      -0.8, 0.7, 0.0,
       
-      // Left Triangles (Blue)
+     // Left Triangles (Blue)
      -0.6 , 0.5, 0.0,
      -0.3, -0.3, 0.0,
      -0.3, 0.5, 0.0,
@@ -423,63 +437,64 @@ var triangleVertices = [
       
       // Orange Strips 
       // 1st One
-      -0.5-num, -0.35, 0.0,
-      -0.5-num, -0.45, 0.0,
-      -0.6-num, -0.35, 0.0,
+      -0.5-randNum, -0.35, 0.0,
+      -0.5-randNum, -0.45, 0.0,
+      -0.6-randNum, -0.35, 0.0,
       
-      -0.6-num, -0.40, 0.0,
-      -0.6-num, -0.35, 0.0,
-      -0.5-num, -0.45, 0.0,
+      -0.6-randNum, -0.40, 0.0,
+      -0.6-randNum, -0.35, 0.0,
+      -0.5-randNum, -0.45, 0.0,
       
-      // 2nd one
-      -0.3-num, -0.35, 0.0,
-      -0.3-num, -0.6, 0.0,
-      -0.4-num, -0.35, 0.0,
+      // 2nd One
+      -0.3-randNum, -0.35, 0.0,
+      -0.3-randNum, -0.6, 0.0,
+      -0.4-randNum, -0.35, 0.0,
       
-      -0.4-num, -0.5, 0.0,
-      -0.4-num, -0.35, 0.0,
-      -0.3-num, -0.6, 0.0,
+      -0.4-randNum, -0.5, 0.0,
+      -0.4-randNum, -0.35, 0.0,
+      -0.3-randNum, -0.6, 0.0,
       
-      // 3rd one
-      -0.05-num, -0.35, 0.0,
-      -0.05-num, -0.75, 0.0,
-      -0.15-num, -0.35, 0.0,
+      // 3rd One
+      -0.05-randNum, -0.35, 0.0,
+      -0.05-randNum, -0.75, 0.0,
+      -0.15-randNum, -0.35, 0.0,
       
-      -0.15-num, -0.65, 0.0,
-      -0.15-num, -0.35, 0.0,
-      -0.05-num, -0.75, 0.0,
+      -0.15-randNum, -0.65, 0.0,
+      -0.15-randNum, -0.35, 0.0,
+      -0.05-randNum, -0.75, 0.0,
       
       // 4th One
-      0.1+num, -0.35, 0.0,
-      0.1+num, -0.75, 0.0,
-      0.2+num, -0.35, 0.0,
+      0.1+randNum, -0.35, 0.0,
+      0.1+randNum, -0.75, 0.0,
+      0.2+randNum, -0.35, 0.0,
       
-      0.2+num, -0.65, 0.0,
-      0.2+num, -0.35, 0.0,
-      0.1+num, -0.75, 0.0,
+      0.2+randNum, -0.65, 0.0,
+      0.2+randNum, -0.35, 0.0,
+      0.1+randNum, -0.75, 0.0,
       
       // 5th One
-      0.3+num, -0.35, 0.0,
-      0.3+num, -0.6, 0.0,
-      0.4+num, -0.35, 0.0,
+      0.3+randNum, -0.35, 0.0,
+      0.3+randNum, -0.6, 0.0,
+      0.4+randNum, -0.35, 0.0,
       
-      0.4+num, -0.5, 0.0,
-      0.4+num, -0.35, 0.0,
-      0.3+num, -0.6, 0.0,
+      0.4+randNum, -0.5, 0.0,
+      0.4+randNum, -0.35, 0.0,
+      0.3+randNum, -0.6, 0.0,
       
       // 6th One
-      0.5+num, -0.35, 0.0,
-      0.5+num, -0.45, 0.0,
-      0.6+num, -0.35, 0.0,
+      0.5+randNum, -0.35, 0.0,
+      0.5+randNum, -0.45, 0.0,
+      0.6+randNum, -0.35, 0.0,
       
-      0.6+num, -0.40, 0.0,
-      0.6+num, -0.35, 0.0,
-      0.5+num, -0.45, 0.0,   
-  ];
+      0.6+randNum, -0.40, 0.0,
+      0.6+randNum, -0.35, 0.0,
+      0.5+randNum, -0.45, 0.0,   
+    ];
     
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(triangleVertices), gl.DYNAMIC_DRAW); // Dynmaic draw
-  i = i +1;
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(triangleVertices), gl.DYNAMIC_DRAW);
+    counter = counter + 1;
 }
+
 
 /**
  * Startup function called from html code to start program.
