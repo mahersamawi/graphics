@@ -1,4 +1,9 @@
 /**
+* @author: Maher Samawi
+* Citations: Used the terrainModeling.js file as a the starter for this mp
+*
+**/
+/**
  * Iteratively generate terrain from numeric inputs
  * @param {number} n
  * @param {number} minX Minimum X value
@@ -45,24 +50,26 @@ function terrainFromIteration(n, minX,maxX,minY,maxY, vertexArray, faceArray,nor
     
     // Create 2D array for height map
     var heightMap = new Array();
-    for (i=0;i<n;i++) {
-      heightMap[i]=new Array();
-      for (j=0;j<n;j++) {
-        heightMap[i][j]=0;
+    for (i = 0; i < n; i++) {
+      heightMap[i] = new Array();
+      for (j = 0 ; j < n; j++) {
+        heightMap[i][j] = 0;
       }
     }
+    console.log("n is", n);
     var random_range = 2;
     generateDiamondSquare(heightMap, 0, 0, n, n, random_range, n);
 
     // Create the mapping from the z coordinates in the vertex array to the height map
     // Divide by 2.5 since the heightMap z coordinate goes outside the boundaries of the image and makes it look better
     for(var i = 0; i < n; i++){
-      for(var j =0; j< n; j++){
+      for(var j = 0; j< n; j++){
         vertexArray[(((i * 3) * (n + 1) + (j * 3)) + 2)] = heightMap[i][j] / 2.5;
       }
     }
-    console.log(heightMap);
-
+    console.log(faceArray);
+    //setupNormals(vertexArray, faceArray, normalArray);
+    //console.log(heightMap);
     return numT;
 }
 /**
@@ -94,6 +101,7 @@ function generateDiamondSquare(heightMap, minX, minY, maxX, maxY, range, depth){
       var second = heightMap[i][j - depth];
       var third = heightMap[i - depth][j];
       var fourth = heightMap[i][j];
+      
       var posNeg = posNegArray[Math.floor(Math.random()*posNegArray.length)];
       var avgWithRandomNumber = ((first + second + third + fourth) / 4 ) + (Math.random() * range * posNeg);
       heightMap[i - Math.floor(depth / 2)][j - Math.floor(depth / 2)] = avgWithRandomNumber;
@@ -127,10 +135,16 @@ function generateDiamondSquare(heightMap, minX, minY, maxX, maxY, range, depth){
   generateDiamondSquare(heightMap, minX, minY, maxX, maxY, range/2, depth/2);
 }
 
-/*function setupNormals(vertexArray, faceArray, normalArray){
-  normalArray
-}*/
+function setupNormals(vertexArray, faceArray, normalArray){
+  for ( var i = 0; i < vertexArray; i+=3){
+    var v1 = vec3.fromValues(vertexArray[i], vertexArray[i + 1] , vertexArray[i + 2]);
 
+    vec3.normalize(v1,v1);
+    normalArray[i]     = v1[0];
+    normalArray[i + 1] = v1[1];
+    normalArray[i + 2] = v1[2];
+  }
+}
 
 /**
  * Generates line values from faces in faceArray
@@ -153,5 +167,4 @@ function generateLinesFromIndexedTriangles(faceArray,lineArray)
         lineArray.push(faceArray[fid]);
     }
 }
-
 

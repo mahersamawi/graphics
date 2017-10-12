@@ -45,7 +45,7 @@ function setupTerrainBuffers() {
     var nTerrain=[];
     var eTerrain=[];
     // Made larger than 20 
-    var gridN= 128 ;
+    var gridN = 128 ;
     
     var numT = terrainFromIteration(gridN, -1,1,-1,1, vTerrain, fTerrain, nTerrain);
     console.log("Generated ", numT, " triangles"); 
